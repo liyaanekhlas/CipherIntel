@@ -112,7 +112,7 @@ class SearchHistoryItem(BaseModel):
     searched_at: str
 
 
-@app.get("/", tags=["Health"])
+@app.get("/api/health", tags=["Health"])
 async def health_check():
     """Health check endpoint confirming CipherIntel service is operational."""
     return {
