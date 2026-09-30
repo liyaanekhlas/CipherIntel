@@ -61,7 +61,7 @@ async def query_virustotal(client: httpx.AsyncClient, ioc_type: str, ioc_value: 
         url = f"https://www.virustotal.com/api/v3/domains/{ioc_value}"
     elif ioc_type == "url":
         # Base64 URL-safe encoding without '=' padding
-        encoded_url = base64.urlsafe_b64encode(ioc_value.encode("utf-8")).decode("ascii").rstrip("=")
+        encoded_url = base64.urlsafe_b64encode(ioc_value.strip().encode()).decode().strip("=")
         url = f"https://www.virustotal.com/api/v3/urls/{encoded_url}"
     elif ioc_type == "hash":
         url = f"https://www.virustotal.com/api/v3/files/{ioc_value}"
@@ -281,7 +281,7 @@ async def query_urlhaus(client: httpx.AsyncClient, ioc_type: str, ioc_value: str
     Catches 404s, 429s, and authentication errors gracefully.
     """
     api_key = os.getenv("ABUSE_CH_API_KEY", "").strip()
-    headers = {"Auth-Key": api_key}
+    headers = {"Auth-Key": api_key} if api_key else {}
 
     if ioc_type == "domain":
         url = "https://urlhaus-api.abuse.ch/v1/host/"
