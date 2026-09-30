@@ -402,3 +402,10 @@ async def test_yara_rule(
 
     result = scan_with_custom_rule(file_bytes, rule)
     return result
+
+from fastapi.staticfiles import StaticFiles
+import os
+
+frontend_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
+if os.path.exists(frontend_dir):
+    app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
